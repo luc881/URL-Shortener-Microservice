@@ -52,26 +52,24 @@ const verifyURL = (url, callback) =>{
     }
 }
 app.post('/api/shorturl', (req, res) => {
-    const body = req.body;
-    const originalUrl = req.body.url;
-    const shortUrl = count;
+    const original_url = req.body.url;
+    const short_url = count;
     count++;
 
-    verifyURL(originalUrl, (err, ipAddress) => {
+    verifyURL(original_url, (err, ipAddress) => {
         if (err) {
             res.json({ error: 'invalid url' });
         } else {
             urls.push(
                 {
-                    originalUrl: originalUrl,
-                    shortUrl: shortUrl
+                    original_url: original_url,
+                    short_url: short_url
                 }
             )
-            res.json({ originalUrl: originalUrl, shortUrl: shortUrl });
+            res.json({ original_url: original_url, short_url: short_url });
 
         }
     });
-
 
 })
 
@@ -79,17 +77,20 @@ app.post('/api/shorturl', (req, res) => {
 
 app.get('/api/shorturl/:shortUrl', (req, res) => {
     const url = req.params.shortUrl;
+    let found = false;
 
     urls.forEach((item) => {
-        if (item.shortUrl == url) {
-            res.redirect(item.originalUrl);
-        } else {
-            res.json({ error: 'url not found' });
+        console.log(typeof item.short_url, typeof url); // Log the types for debugging
+        if (item.short_url === +url) {
+            res.redirect(item.original_url);
+            found = true; // Set found to true if the URL is found
         }
-    } )
+    });
 
-} )
-
+    if (!found) {
+        res.json({ error: 'url not found' });
+    }
+});
 
 app.listen(port, function () {
     console.log(`Listening on port ${port}`);
