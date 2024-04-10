@@ -1,0 +1,30 @@
+{
+    "extends": ["eslint:recommended", "prettier"],
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "env": {
+        "node": true
+    },
+    "rules": {
+        "no-unused-vars": "off",
+        "@html-eslint/require-closing-tags": [
+            "error",
+            { "selfClosing": "always" }
+        ],
+        "@html-eslint/no-extra-spacing-attrs": [
+            "error",
+            { "enforceBeforeSelfClose": true }
+        ]
+    },
+    "plugins": ["@html-eslint"],
+    "overrides": [
+        {
+            "files": ["*.html"],
+            "parser": "@html-eslint/parser",
+            "extends": ["plugin:@html-eslint/recommended"]
+        }
+    ]
+}
+
